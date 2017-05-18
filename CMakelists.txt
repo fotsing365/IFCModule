@@ -1,0 +1,26 @@
+cmake_minimum_required(VERSION 2.8)
+SET(PROJECT_EXAMPLE_NAME test)
+set(EXECUTABLE_OUTPUT_PATH bin)
+project(${PROJECT_EXAMPLE_NAME}_app)
+file(
+        GLOB_RECURSE
+        source_files
+        *.cpp
+        *.hpp
+)
+SET (OUTPUT_PATH)
+ADD_EXECUTABLE(${PROJECT_EXAMPLE_NAME}_app ${source_files})
+find_package (ifc2x3 REQUIRED)
+  include_directories(${IFC2X3_INCLUDE_DIRS})
+  target_link_libraries (${PROJECT_EXAMPLE_NAME}_app ${IFC2X3_LIBRARIES})
+
+  if(NOT WIN32)
+    if(NOT APPLE)
+      TARGET_LINK_LIBRARIES(${PROJECT_EXAMPLE_NAME}_app uuid)
+    endif()
+  else()
+      TARGET_LINK_LIBRARIES(${PROJECT_EXAMPLE_NAME}_app rpcrt4)
+  endif()
+
+  SET_TARGET_PROPERTIES(${PROJECT_EXAMPLE_NAME}_app PROPERTIES PROJECT_LABEL "Example Ifc2x3 SDK - ${PROJECT_EXAMPLE_NAME}")
+
